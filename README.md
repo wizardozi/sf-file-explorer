@@ -1,21 +1,21 @@
 # Salesforce File Explorer (Experience Cloud)
 
-This Lightning Web Component (LWC) + Apex project provides a custom file management system for Experience Cloud users. It mimics a standard folder/file system interface (like macOS Finder or Google Drive), allowing Community Users to upload, preview, and manage files linked to their Contact records.
+This Lightning Web Component (LWC) + Apex project provides a custom file management system for Experience Cloud users. It mimics a standard folder/file system interface (like Dropbox or Google Drive), allowing Community Users to upload, preview, and manage files linked to their Contact records.
 
 ## Features
 
-- 🔡 **Alphabetized Folder Tree** — Auto-generates folders (A, B, C...) per user based on Contact name.
-- 📁 **User-Specific File Views** — Each user sees the same folder structure but only their own files.
-- 📤 **File Upload** — Upload files into specific folders with support for multiple file types.
-- 🔗 **File-to-Folder Linking** — Files are linked to folders using a custom junction object (`FolderFileLink__c`).
-- 🖼 **Preview Modal** — Inline preview of uploaded files with options to download or close.
-- 🧪 **Test Coverage** — Apex classes are test-covered to support packaging and deployment.
+- **Folder Tree** — Auto-generates folders (A, B, C...) per Contact based on User profile.
+- **User-Specific File Views** — Each user sees the same folder structure but only their own files.
+- **File Upload** — Upload files into specific folders with support for multiple file types.
+- **File-to-Folder Linking** — Files are linked to folders using a custom junction object (`FolderFileLink__c`).
+- **Preview Modal** — Inline preview of uploaded files with options to download or close.
+- **Test Coverage** — Apex classes are test-covered to support packaging and deployment.
 
 ## Tech Stack
 
 - **Frontend:** Lightning Web Components (LWC)
 - **Backend:** Apex (Triggers, Classes, Future Methods)
-- **Data Model:** `ContentDocument`, `ContentDocumentLink`, `Folder__c`, `FolderFileLink__c`, `Contact`
+- **Data Model:** `ContentDocument`, `ContentDocumentLink`, `ContentVersion`, `Folder__c`, `FolderFileLink__c`, `Contact`, `User`
 - **Experience Cloud:** Designed for logged-in community users
 
 ---
@@ -28,14 +28,13 @@ Ensure the following components are deployed:
 
 - LWC Components:
   - `fileExplorer`
-  - `filePreviewModal`
 - Apex Classes:
   - `FileExplorerController`
+  - `FolderInitializer`
   - `ContentDocumentLinkHandler`
-  - `FolderManager`
 - Triggers:
-  - `ContactTrigger` (for auto-folder creation)
-  - `ContentDocumentLinkTrigger` (for linking logic)
+  - `UserTrigger` (for auto-folder creation)
+  - `UpdateCDLShareType` (for linking logic)
 
 ### 2. Custom Objects
 
@@ -48,7 +47,6 @@ Ensure both objects and their fields are deployed or created.
 
 - Use the **Community User Plus Login** license or equivalent
 - Ensure users have access to:
-  - `ContentDocument`, `ContentVersion`, `ContentDocumentLink`
   - Apex classes via profile or permission sets
   - Static Resources (if using PDF.js, etc.)
 
@@ -56,7 +54,7 @@ Ensure both objects and their fields are deployed or created.
 
 To support multipage PDF preview:
 - Upload `pdf.js` as a Static Resource
-- Integrate viewer inside your modal component (if not already)
+- Integrate viewer inside your modal component
 
 ---
 
@@ -75,9 +73,9 @@ Before creating a package:
 
 - `FileExplorerControllerTest`
 - `ContentDocumentLinkHandlerTest`
-- `FolderManagerTest`
+- `FolderInitializerTest`
 
-All test classes use mock data and `SeeAllData=false` for deployment readiness.
+All test classes use mock data.
 
 ---
 
