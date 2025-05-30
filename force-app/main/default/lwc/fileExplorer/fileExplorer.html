@@ -1,0 +1,115 @@
+<template>
+    <div class="content-section">      
+      
+      <!-- FOLDER GRID -->
+      <template if:false={currentFolderId}>
+        <!-- FOLDER CARD -->
+        <div class="card-title"> Folders</div>
+        <div class="folder-grid">
+          <template for:each={folders} for:item="folder">
+            <div key={folder.folderId} class="folder-card" 
+                 onclick={handleFolderClick} 
+                 data-id={folder.folderId} 
+                 data-name={folder.folderName}>          
+              <svg class="folder-svg" viewBox="0 0 24 24">
+                <path d="M10 4H2v16h20V6H12l-2-2z" fill="white" />
+              </svg>
+              <div class="folder-name">{folder.folderName}</div>
+              <div class="folder-meta">{folder.fileCount} Files / {folder.formattedSize}</div>           
+            </div>
+          </template>
+        </div>
+      </template>
+  
+      <!-- CARD BASED TABLE  -->
+      <template if:false={currentFolderId}>
+        <div class="card-title"> Recent Files</div>        
+        
+        <template if:true={files}>          
+          <div class="table-wrapper">
+            <div class="table-header">
+              <div class="col name">Name</div>
+              <div class="col type">Type</div>
+              <div class="col size">Size</div>
+              <div class="col date">Date Last Modified</div>
+            </div>
+            <div class="file-list-scroll">    
+              <template for:each={recentFiles} for:item="file">
+                <div key={file.contentDocumentId} ondblclick={handlePreview} data-id={file.contentDocumentId} class="file-row">
+                  <div class="col name">{file.fileName}</div>
+                  <div class="col type">.{file.fileExtension}</div>
+                  <div class="col size">{file.formattedFileSize}</div>
+                  <div class="col date">{file.contentModifiedDate}</div>
+                  
+                  <!-- <lightning-button variant="base" label="Download" icon-name="utility:download" class="slds-var-m-left_x-small" onclick={handleDownload} data-id={file.contentDocumentId}></lightning-button> -->
+                </div>
+              </template>
+            </div>
+          </div>
+        </template>
+      </template>
+
+      <!-- FOLDER FILE LIST -->
+      <template if:true={currentFolderId}>
+
+        <lightning-file-upload
+                  label="Attach Files"
+                  name="UploadFile"
+                  record-id={contactId}
+                  onuploadfinished={handleUploadFinished}
+                  multiple
+                  visibility="AllUsers">
+        </lightning-file-upload>
+
+        <!-- Breadcrumb + Folder File Table -->
+        <div class="card-title"> 
+          <span onclick={goBack} class="bread-crumb">Folders</span> > {currentFolderName} 
+        </div>
+        <template if:true={selectedFolder.files}>
+          <div class="table-wrapper">
+            <div class="table-header">
+              <div class="col name">Name</div>
+              <div class="col type">Type</div>
+              <div class="col size">Size</div>
+              <div class="col date">Date Last Modified</div>
+            </div>
+            <div class="file-list-scroll">
+              <template for:each={selectedFolder.files} for:item="file">
+                <div key={file.contentDocumentId} ondblclick={handlePreview} data-id={file.contentDocumentId} class="file-row">
+                  <div class="col name">{file.fileName}</div>
+                  <div class="col type">.{file.fileExtension}</div>
+                  <div class="col size">{file.formattedFileSize}</div>
+                  <div class="col date">{file.contentModifiedDate}</div>
+                </div>
+              </template>            
+            </div>
+          </div>           
+          </template>              
+      </template>    
+    </div>
+
+    <!-- CUSTOM PREVIEW MODAL -->
+    <template if:true={showPreviewModal}>
+      <div class="custom-modal-backdrop">
+        <div class="custom-top-bar">
+          <div class="file-meta">
+            <lightning-icon icon-name={fileIcon} size="small"></lightning-icon>
+            <span class="file-name">{fileName}</span>
+          </div>
+
+          <div class="action-buttons">
+            <a href={downloadUrl} target="_blank" class="download-link">Download</a>
+            <button onclick={closePreviewModal} class="custom-close-button">✕</button>
+          </div>
+        </div>
+
+        <!-- File preview here (PDF or image or fallback icon) -->
+        <template if:true={canPreview}>
+          <img src={modalPreviewUrl} class="preview-image" />
+        </template>
+        <template if:false={canPreview}>
+          <lightning-icon icon-name={fileIcon} size="large"></lightning-icon>
+        </template>
+      </div>
+    </template>
+</template>

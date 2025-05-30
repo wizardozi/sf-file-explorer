@@ -1,0 +1,21 @@
+// Use .soql files to store SOQL queries.
+// You can execute queries in VS Code by selecting the
+//     query text and running the command:
+//     SFDX: Execute SOQL Query with Currently Selected Text
+
+SELECT Id, Name FROM Account
+
+SELECT Id, ContactId From User Where Id IN ('005gL000002CIknQAG')
+// test_file_2 069gL000001cjjVQAQ
+// test_file 069gL000001WLyPQAW
+SELECT Id, ContentDocumentId, LinkedEntityId, ShareType, Visibility FROM ContentDocumentLink WHERE ContentDocumentId IN ('068gL000001d2uDQAQ')
+
+SELECT Id, Title, FileExtension, ContentDocumentId, FileType, IsLatest, ContentSize, VersionData, ContentUrl
+FROM ContentVersion
+WHERE ContentDocumentId = '068gL000001d2uDQAQ'
+
+SELECT Id, ContentDocumentId, Type, Status
+FROM ContentRendition
+WHERE ContentDocumentId = '069gL000001dofVQAQ'
+
+sf data:query --query "SELECT Id, ContentDocumentId, Type, Status FROM ContentRendition WHERE ContentDocumentId = '069gL000001V34HQAS' " --target-org devDemo --use-tooling-api
