@@ -2,6 +2,8 @@
 
 This Lightning Web Component (LWC) + Apex project provides a custom file management system for Experience Cloud users. It mimics a standard folder/file system interface (like Dropbox or Google Drive), allowing Community Users to upload, preview, and manage files linked to their Contact records.
 
+![Demo](assets/output.gif)
+
 ## Features
 
 - **Folder Tree** — Auto-generates folders (A, B, C...) per Contact based on User profile.
