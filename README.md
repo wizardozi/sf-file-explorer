@@ -97,5 +97,5 @@ MIT or custom license depending on client use.
 
 ## Contact
 
-Project by Alexandre Denommée  
+Project by Alexandre Denommee  
 For questions or consulting, contact via [GitHub](https://github.com/wizardozi) or internal project channels.
